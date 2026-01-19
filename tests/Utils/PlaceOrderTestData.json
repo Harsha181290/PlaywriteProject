@@ -1,0 +1,34 @@
+[{
+  "url":"https://rahulshettyacademy.com/client",
+  "username":"harsha935383@gmail.com",
+  "password":"Harsha@2025",
+  "product" :"ZARA COAT 3",
+  "country" : " India",
+  "cvv" : "123",
+  "name": "harsha",
+  "countrycode":"ind",
+  "validationmessage" : " Thankyou for the order. "
+},
+{
+  "url":"https://rahulshettyacademy.com/client",
+  "username":"harsha935383@gmail.com",
+  "password":"Harsha@2025",
+  "product" :"ADIDAS ORIGINAL",
+  "country" : " India",
+  "cvv" : "123",
+  "name": "harsha",
+  "countrycode":"ind",
+  "validationmessage" : " Thankyou for the order. "
+},
+{
+  "url":"https://rahulshettyacademy.com/client",
+  "username":"harsha935383@gmail.com",
+  "password":"Harsha@2025",
+  "product" :"iphone 13 pro",
+  "country" : " India",
+  "cvv" : "123",
+  "name": "harsha",
+  "countrycode":"ind",
+  "validationmessage" : " Thankyou for the order. "
+}
+]
