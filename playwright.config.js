@@ -1,29 +1,27 @@
 // @ts-check
-import { defineConfig, devices } from '@playwright/test';
-import { trace } from 'node:console';
-import { on } from 'node:events';
+const { defineConfig, devices } = require('@playwright/test');
 
+const isCI = !!process.env.CI;
 
- 
-const config=({
-  testDir:'./tests',
-  retries:2,
-   timeout: 40 *1000,
-   expect: { 
-    
-    timeout: 5000, }, 
+module.exports = defineConfig({
+  testDir: './tests',
 
-    reporter:'html',
-    
-  use: {
-    
-    browserName:'chromium',
-    headless : true,
-    screenshot: 'on',
-    trace : 'retain-on-fail' //off , on ,retain-on-fail
+  timeout: 40 * 1000,
 
+  retries: isCI ? 2 : 0,
+
+  expect: {
+    timeout: 5000,
   },
-  
-});
-module.exports=config
 
+  reporter: isCI
+    ? [['allure-playwright']]
+    : [['html', { open: 'on-failure' }]],
+
+  use: {
+    browserName: 'chromium',
+    headless: true,
+    screenshot: 'only-on-failure',
+    trace: 'retain-on-failure',
+  },
+});
