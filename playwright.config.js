@@ -20,8 +20,11 @@ module.exports = defineConfig({
 
   use: {
     browserName: 'chromium',
-    headless: true,
+    headless: false,
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',
+     launchOptions: {
+      slowMo: 2000, // milliseconds
+    },
   },
 });
