@@ -6,6 +6,7 @@
     "Regression": "npx playwright test tests",
     "WebTests": "npx playwright test --grep @Web",
     "APITests": "npx playwright test --grep @API",
+    "Smoke": "npx playwright test --grep @Smoke",
     "Safari": "npx playwright test tests --config playwright.config1.js --project=Safari",
     "Chrome": "npx playwright test tests --config playwright.config1.js --project=Chrome"
   },

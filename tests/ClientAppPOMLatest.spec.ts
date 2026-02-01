@@ -1,10 +1,10 @@
-import test, { expect } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 import { POManager } from "./PageObjects _ts/POManager";
 
 const dataset= JSON.parse(JSON.stringify(require('./Utils/PlaceOrderTestData.json')));
 for(const data of dataset)
 {   
-test(`Client App login for ${data.product}`, async ({ page }) => {
+test(`@smoke Client App login for ${data.product}`, async ({ page }) => {
     const poManager= new POManager(page);
     const loginpage= poManager.getLoginPage();
     const dashboard = poManager.getDashboardPage();
