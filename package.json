@@ -8,7 +8,8 @@
     "APITests": "npx playwright test --grep @API",
     "Smoke": "npx playwright test --grep @Smoke",
     "Safari": "npx playwright test tests --config playwright.config1.js --project=Safari",
-    "Chrome": "npx playwright test tests --config playwright.config1.js --project=Chrome"
+    "Chrome": "npx playwright test tests --config playwright.config1.js --project=Chrome",
+    "CucumberRegression": "npx cucumber-js features --tags \"@Regression\" --retry 1 --format html:cucumber-report.html"
   },
   "keywords": [],
   "author": "",
