@@ -9,7 +9,7 @@
     "Smoke": "npx playwright test --grep @Smoke",
     "Safari": "npx playwright test tests --config playwright.config1.js --project=Safari",
     "Chrome": "npx playwright test tests --config playwright.config1.js --project=Chrome",
-    "CucumberRegression": "npx cucumber-js features --tags \"@Regression\" --retry 1 --format html:cucumber-report.html"
+    "CucumberRegression": "npx cucumber-js features --tags \"@Regression\" --retry 1 --format html:cucumber-report.html --exit"
   },
   "keywords": [],
   "author": "",
