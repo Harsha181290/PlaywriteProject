@@ -1,5 +1,6 @@
 
 Feature: All Ecommerce Validations 
+@Regression
 Scenario: Placing the Order
     Given User navigates to "https://rahulshettyacademy.com/client" 
     Then User logins into ecomercesite with "harsha935383@gmail.com" and "Harsha@2025"
