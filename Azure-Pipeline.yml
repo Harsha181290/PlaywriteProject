@@ -1,38 +1,46 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
 jobs:
-  - job: Build
-    pool:
-      vmImage: 'ubuntu-latest'
+- job: Playwright_Tests
+  displayName: Run Playwright Tests on Azure Grid
 
-    steps:
-      - task: NodeTool@0
-        inputs:
-          versionSpec: '18.x'
-        displayName: 'Install Node.js'
+  steps:
+  - task: NodeTool@0
+    displayName: Install Node.js
+    inputs:
+      versionSpec: '18.x'
 
-      - task: PowerShell@2
-        displayName: "Install dependencies"
-        inputs:
-          targetType: 'inline'
-          script: |
-            cd tests
-            npm ci
+  - script: |
+      node -v
+      npm -v
+    displayName: Verify Node Installation
 
-      - task: AzureCLI@2
-        displayName: Run Playwright Test (Azure Grid)
-        env:
-          PLAYWRIGHT_SERVICE_URL: $(PLAYWRIGHT_SERVICE_URL)
-          PLAYWRIGHT_SERVICE_RUN_ID: $(Build.DefinitionName)-$(Build.BuildNumber)-$(System.JobAttempt)
-        inputs:
-          azureSubscription: 'PlaywrightTestSpace'
-          scriptType: 'pscore'
-          scriptLocation: 'inlineScript'
-          inlineScript: |
-            npx playwright test --config=playwright.service.config.js
-          addSpnToEnvironment: true
+  - script: |
+      cd tests
+      npm ci
+    displayName: Install Dependencies
 
-      - task: PublishPipelineArtifact@1
-        displayName: Upload Playwright report
-        inputs:
-          targetPath: tests/playwright-report/
-          artifact: 'Playwright-tests'
-          publishLocation: 'pipeline'
+  - task: AzureCLI@2
+    displayName: Run Playwright Tests (Azure Grid)
+    env:
+      PLAYWRIGHT_SERVICE_URL: $(PLAYWRIGHT_SERVICE_URL)
+      PLAYWRIGHT_SERVICE_RUN_ID: $(Build.DefinitionName)-$(Build.BuildNumber)-$(System.JobAttempt)
+    inputs:
+      azureSubscription: 'PlaywrightTestSpace'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        node -v
+        npx playwright test --config=playwright.service.config.js
+      addSpnToEnvironment: true
+
+  - task: PublishPipelineArtifact@1
+    displayName: Publish Playwright Report
+    inputs:
+      targetPath: tests/playwright-report/
+      artifact: Playwright-Report
+      publishLocation: pipeline
