@@ -1,15 +1,22 @@
 jobs:
   - job: Build
     pool:
-      name: Default   # or the exact name of your self-hosted pool
+      vmImage: 'ubuntu-latest'
+
     steps:
-      - task: PowerShell@2
-        displayName: "Install dependencies"
+      - task: NodeTool@0
         inputs:
-          targetType: 'inline'
-          script: 'npm ci'
-          workingDirectory: tests/
-      
+          versionSpec: '18.x'
+        displayName: 'Install Node.js'
+
+      - script: npm ci
+        displayName: "Install dependencies"
+        workingDirectory: tests/
+
+      - script: npx playwright install --with-deps
+        displayName: "Install Playwright Browsers"
+        workingDirectory: tests/
+
       - task: AzureCLI@2
         displayName: Run Playwright Test
         env:
@@ -17,15 +24,16 @@ jobs:
           PLAYWRIGHT_SERVICE_RUN_ID: $(Build.DefinitionName) - $(Build.BuildNumber) - $(System.JobAttempt)
         inputs:
           azureSubscription: 'PlaywrightTestSpace'
-          scriptType: 'pscore'
+          scriptType: 'bash'
           scriptLocation: 'inlineScript'
           inlineScript: |
             npx playwright test --config=playwright.service.config.js
           addSpnToEnvironment: true
-      
+        workingDirectory: tests/
+
       - task: PublishPipelineArtifact@1
         displayName: Upload Playwright report
         inputs:
           targetPath: tests/playwright-report/
-          artifact: 'Playwright tests'
+          artifact: 'Playwright-tests'
           publishLocation: 'pipeline'
