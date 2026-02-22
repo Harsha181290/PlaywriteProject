@@ -35,7 +35,7 @@ jobs:
       scriptLocation: 'inlineScript'
       inlineScript: |
         node -v
-        npx playwright test --config=playwright.service.config.js
+        npx playwright test  --config=playwright.service.config.js
       addSpnToEnvironment: true
 
   - task: PublishPipelineArtifact@1
