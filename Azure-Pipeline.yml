@@ -9,27 +9,27 @@ jobs:
           versionSpec: '18.x'
         displayName: 'Install Node.js'
 
-      - script: npm ci
+      - task: PowerShell@2
         displayName: "Install dependencies"
-        workingDirectory: tests/
-
-      - script: npx playwright install --with-deps
-        displayName: "Install Playwright Browsers"
-        workingDirectory: tests/
+        inputs:
+          targetType: 'inline'
+          script: |
+            cd tests
+            npm ci
 
       - task: AzureCLI@2
-        displayName: Run Playwright Test
+        displayName: Run Playwright Test (Azure Grid)
         env:
           PLAYWRIGHT_SERVICE_URL: $(PLAYWRIGHT_SERVICE_URL)
-          PLAYWRIGHT_SERVICE_RUN_ID: $(Build.DefinitionName) - $(Build.BuildNumber) - $(System.JobAttempt)
+          PLAYWRIGHT_SERVICE_RUN_ID: $(Build.DefinitionName)-$(Build.BuildNumber)-$(System.JobAttempt)
         inputs:
           azureSubscription: 'PlaywrightTestSpace'
-          scriptType: 'bash'
+          scriptType: 'pscore'
           scriptLocation: 'inlineScript'
           inlineScript: |
+            cd tests
             npx playwright test --config=playwright.service.config.js
           addSpnToEnvironment: true
-        workingDirectory: tests/
 
       - task: PublishPipelineArtifact@1
         displayName: Upload Playwright report
