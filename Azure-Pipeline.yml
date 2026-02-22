@@ -1,5 +1,7 @@
 jobs:
   - job: Build
+    pool:
+      name: Default   # or the exact name of your self-hosted pool
     steps:
       - task: PowerShell@2
         enabled: true
@@ -15,14 +17,13 @@ jobs:
           PLAYWRIGHT_SERVICE_URL: $(PLAYWRIGHT_SERVICE_URL)
           PLAYWRIGHT_SERVICE_RUN_ID: $(Build.DefinitionName) - $(Build.BuildNumber) - $(System.JobAttempt)
         inputs:
-          azureSubscription: 'PlaywrightTestSpace' # Service connection used to authenticate this pipeline with Azure to use the service
+          azureSubscription: 'PlaywrightTestSpace'
           scriptType: 'pscore'
           scriptLocation: 'inlineScript'
           inlineScript: |
-            npx playwright test  --config=playwright.service.config.js           
+            npx playwright test --config=playwright.service.config.js
           addSpnToEnvironment: true
           
- 
       - task: PublishPipelineArtifact@1
         displayName: Upload Playwright report
         inputs:
