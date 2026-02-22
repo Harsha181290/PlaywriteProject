@@ -26,7 +26,7 @@ jobs:
     workingDirectory: tests
     displayName: Install Dependencies
 
-  # Run ONLY Calender.spec.js
+  # Run ONLY Calender.spec.js on Azure Playwright Service
   - task: AzureCLI@2
     displayName: Run Calender.spec.js (Azure Grid)
     env:
@@ -41,9 +41,11 @@ jobs:
         npx playwright test tests/Calender.spec.js --config=playwright.service.config.js
       addSpnToEnvironment: true
 
+  # Publish HTML report (default Playwright folder)
   - task: PublishPipelineArtifact@1
     displayName: Publish Playwright Report
+    condition: succeededOrFailed()
     inputs:
-      targetPath: tests/playwright-report/
+      targetPath: playwright-report
       artifact: Playwright-Report
       publishLocation: pipeline
