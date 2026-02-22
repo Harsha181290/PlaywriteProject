@@ -4,13 +4,12 @@ jobs:
       name: Default   # or the exact name of your self-hosted pool
     steps:
       - task: PowerShell@2
-        enabled: true
         displayName: "Install dependencies"
         inputs:
           targetType: 'inline'
           script: 'npm ci'
-          workingDirectory: tests/ # update accordingly
- 
+          workingDirectory: tests/
+      
       - task: AzureCLI@2
         displayName: Run Playwright Test
         env:
@@ -23,10 +22,10 @@ jobs:
           inlineScript: |
             npx playwright test --config=playwright.service.config.js
           addSpnToEnvironment: true
-          
+      
       - task: PublishPipelineArtifact@1
         displayName: Upload Playwright report
         inputs:
-          targetPath: tests/playwright-report/ # update accordingly
+          targetPath: tests/playwright-report/
           artifact: 'Playwright tests'
           publishLocation: 'pipeline'
