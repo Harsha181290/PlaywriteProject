@@ -6,7 +6,7 @@ pool:
 
 jobs:
 - job: Playwright_Tests
-  displayName: Run Playwright Tests on Azure Grid
+  displayName: Run Single Playwright Test on Azure Grid
 
   steps:
   - task: NodeTool@0
@@ -15,17 +15,20 @@ jobs:
       versionSpec: '18.x'
 
   - script: |
+      echo "Node Version:"
       node -v
+      echo "NPM Version:"
       npm -v
     displayName: Verify Node Installation
 
-  - script: |
-      cd tests
-      npm ci
+  # Install dependencies from tests folder
+  - script: npm ci
+    workingDirectory: tests
     displayName: Install Dependencies
 
+  # Run ONLY Calender.spec.js
   - task: AzureCLI@2
-    displayName: Run Playwright Tests (Azure Grid)
+    displayName: Run Calender.spec.js (Azure Grid)
     env:
       PLAYWRIGHT_SERVICE_URL: $(PLAYWRIGHT_SERVICE_URL)
       PLAYWRIGHT_SERVICE_RUN_ID: $(Build.DefinitionName)-$(Build.BuildNumber)-$(System.JobAttempt)
@@ -34,8 +37,8 @@ jobs:
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |
-        node -v
-        npx playwright test Calender.spec.js --config=../playwright.service.config.js
+        echo "Running Single Test..."
+        npx playwright test tests/Calender.spec.js --config=playwright.service.config.js
       addSpnToEnvironment: true
 
   - task: PublishPipelineArtifact@1
