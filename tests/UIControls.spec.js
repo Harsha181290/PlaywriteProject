@@ -1,3 +1,4 @@
+//Author : Harsha
 const { test, expect } = require('@playwright/test');
 test("UIControls", async ({ page }) => {
   await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
