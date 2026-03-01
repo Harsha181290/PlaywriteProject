@@ -17,18 +17,19 @@ class OrdersPage {
   }
   
    async ValidateOrderPlaced(orderId) {
-    await this.myOrdersLink.first().click();
+    await this.myOrdersLink.click();
     await this.ordersTableRows.first().waitFor();
 
-    const ordersCount = await this.ordersTableRows.count();
-    const Orders = this.page.locator("tr.ng-star-inserted");
-    for (let i = 0; i < ordersCount; i++) {
-      const orderidtext = await Orders.locator("th").nth(i).textContent();
-      if (orderId.includes(orderidtext.trim())) {
-        
-        await Orders.locator("td").locator("button").first().click();
-        break;
-      }
+    // Find and click the view button for the matching order ID
+    const matchingRow = this.ordersTableRows.filter({
+      has: this.page.locator("th"),
+      hasText: orderId
+    });
+
+    if (await matchingRow.count() > 0) {
+      await matchingRow.locator("button").first().click();
+    } else {
+      throw new Error(`Order ID "${orderId}" not found in orders table`);
     }
   }
 
