@@ -34,6 +34,7 @@ test("ChildWindows", async ({ browser }) => {
   console.log(domain);
   await page.locator("#username").fill(domain);
 
+console.log(await page.locator("#username").inputValue());
 
 
 
